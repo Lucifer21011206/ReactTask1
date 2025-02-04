@@ -17,6 +17,7 @@ import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import backgroundImage from "./landing_page_background.svg";
 import Logo from "./Logo.svg";
+import Login from "./Login.svg"
 import SignUpRightImage from "./signuprightimage1.svg";
 import AccountCreatedImage from "./AccountCreatedImage.svg"
 import OTPRightImage from "./OTPRightImage.svg"
@@ -30,6 +31,7 @@ export default function Home() {
   const [resendOTP, setResendOTP] = useState(false)
   const [accountcreated, setAccountCreated] = useState(false)
   const [login, setLogin] = useState(false)
+  const [loginotp, setLoginOtp] = useState(false) 
   const [form, setForm] = useState({ email: "", password: "", confirmPassword: "", agree: false });
   const [errors, setErrors] = useState({});
 
@@ -86,6 +88,17 @@ export default function Home() {
       // setOpenSignUp(false);
       setResendOTP(false);
       setAccountCreated(true);
+    }
+  }
+
+  const llogin = () => {
+    let newErrors = {};
+
+    if (Object.keys(newErrors).length === 0) {
+      // alert("Form submitted successfully!");
+      // setOpenSignUp(false);
+      setLogin(false);
+      setLoginOtp(true);
     }
   }
 
@@ -423,7 +436,7 @@ export default function Home() {
             <Box sx={{ display: "flex", bgcolor: "white", borderRadius: 6, overflow: "hidden", maxWidth: 800, position: "relative" }}>
               <Box sx={{ padding: 4, width: "50%" }}>
                 <Typography variant="h5" fontWeight="bold">Login Now</Typography>
-                <Typography sx={{ fontSize: "0.9rem", color: "gray", mb: 3 }}>
+                <Typography sx={{ fontSize: "0.9rem", color: "gray", mb: 3, mt:1 }}>
                   To get started, create an account with us. It’s a quick and easy process that only takes a few minutes.
                 </Typography>
                 <TextField 
@@ -434,6 +447,7 @@ export default function Home() {
                   error={!!errors.email} 
                   helperText={errors.email} 
                   sx={{ mb: 2 }} 
+                  borderRadius="30%"
                 />
                 <TextField 
                   fullWidth 
@@ -451,9 +465,14 @@ export default function Home() {
                     checked={form.agree} 
                     onChange={(e) => setForm({ ...form, agree: e.target.checked })} 
                   />
-                  <Typography variant="body2">
+                  <Box sx={{display:"flex"}}>
+                  <Typography variant="body2" sx={{}}>
                     Remember me
                   </Typography>
+                  <Typography sx={{ml:8.5}}>
+                    <a href="#" color="green">Forgot password?</a>
+                  </Typography>
+                  </Box>
                 </Box>
                 {errors.agree && <Typography color="error">{errors.agree}</Typography>}
 
@@ -461,19 +480,63 @@ export default function Home() {
                   variant="contained" 
                   fullWidth 
                   sx={{ bgcolor: "#00A76F", "&:hover": { bgcolor: "#007867" }, mb: 2 }} 
-                  onClick={handleSubmit}
+                  onClick={llogin}
                 >
                   Login
                 </Button>
-                
+                <Typography sx={{mt: 2,mb:2, ml:19}}>
+                  OR
+                </Typography>
                 <Button variant="outlined" fullWidth>Sign in with Google</Button>
+                <Typography sx={{ fontSize: "0.9rem", color: "gray", mb: 3, mt:3 ,ml:7.5}}>
+                  Don't have an account? <a href= "setOpenSignUp">Sign Up</a>
+                </Typography>
               </Box>
               <Box sx={{ width: "50%", bgcolor: "#E6F7F1", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Box component="img" src={SignUpRightImage} alt="Signup Illustration" sx={{ width: "100%", height: "100%", objectFit: "fill" }} />
+                <Box component="img" src={Login} alt="Signup Illustration" sx={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </Box>
             </Box>
           </Box>
         </Modal>
+
+        {/* Login OTP Modal */}
+        <Modal open={loginotp} onClose={() => setLoginOtp(false)}>
+          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", position: "relative" }}>
+            <IconButton
+              onClick={() => setLoginOtp(false)}
+              sx={{ mt: 18, ml: 71, mr: -4, position: "absolute", top: "5px", right: "calc(50% - 400px)", bgcolor: "white", borderRadius: "50%", boxShadow: 1 }}
+            >
+              <CloseIcon />
+            </IconButton>
+
+            <Box sx={{ display: "flex", bgcolor: "white", borderRadius: 2, overflow: "hidden", maxWidth: 800, position: "relative" , borderRadius: 6}}>
+              <Box sx={{ padding: 4, width: "50%" }}>
+              <Typography variant="h5" fontWeight="bold">OTP Verification</Typography>
+              <Typography sx={{ fontSize: "0.9rem", color: "gray", mb: 3 }}>
+                Please enter the 6-digit verification code To 's123@gmail.com' . The Code is valid for 3 minutes
+              </Typography>
+              <Box sx={{ display: "flex", justifyContent: "center", gap: 1, mb: 3 }}>
+                {[...Array(6)].map((_, i) => (
+                  <TextField key={i} sx={{ width: 40, textAlign: "center" , borderRadius: 17}} />
+                ))}
+              </Box>
+              <Box sx={{display:"flex", fontSize: "0.9rem", color: "gray", mb: 3}}>
+              <Typography sx={{ml:3.5, color: "#00A76F" }} style={{cursor:"pointer"}} onClick={resendOTP1}>
+                Resend 
+              </Typography>
+              <Typography sx={{ml:23}}>
+                02:58 
+              </Typography>
+              </Box>
+              <Button fullWidth variant="contained" sx={{ bgcolor: "#00A76F" }}>Submit</Button>
+              </Box>
+              <Box sx={{ width: "50%", bgcolor: "#E6F7F1", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Box component="img" src={OTPRightImage} alt="Signup Illustration" sx={{ width: "100%", height: "100%", objectFit: "fill" }} />
+              </Box>
+            </Box>
+          </Box>
+        </Modal>
+
 
       </Box>
     </ThemeProvider>
